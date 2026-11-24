@@ -1,0 +1,1 @@
+{"name":"ourSafe","description":"Personal safety companion prototype for women featuring Travel Mode, Threat Mode, SOS emergency confirmation, guardian management, nearby assistance, and safety trigger concepts.","requestFramePermissions":["geolocation","microphone","camera"],"majorCapabilities":["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]}

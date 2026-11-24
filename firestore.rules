@@ -1,0 +1,36 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // User safety profiles and registered guardians
+    match /user_profiles/{userId} {
+      allow read, write: if true; // Allow client sync or authenticated user
+    }
+
+    // Live Threat Mode sessions and GPS breadcrumbs
+    match /threat_sessions/{sessionId} {
+      allow read, write: if true; // Emergency access for guardians
+    }
+
+    // Evidence recording metadata (audio, video, timestamps)
+    match /evidence_records/{evidenceId} {
+      allow read, create: if true;
+      allow update, delete: if false; // Evidence vault is immutable and tamper-proof
+    }
+
+    // Emergency SOS dispatches and notification audit trail
+    match /sos_dispatches/{dispatchId} {
+      allow read, create: if true;
+      allow update, delete: if false; // Audit logs cannot be deleted
+    }
+  }
+}

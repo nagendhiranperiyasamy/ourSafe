@@ -1,0 +1,17 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // Evidence audio/video uploads
+    match /evidence/{userId}/{allPaths=**} {
+      allow read, create: if true;
+      allow delete: if false; // Evidence cannot be deleted by tamper attempts
+    }
+
+    // User profile avatars
+    match /avatars/{userId}/{allPaths=**} {
+      allow read: if true;
+      allow write: if true;
+    }
+  }
+}

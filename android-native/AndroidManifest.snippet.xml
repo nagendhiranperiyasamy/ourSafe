@@ -1,0 +1,57 @@
+<!--
+  Merge these permissions and declarations into android/app/src/main/AndroidManifest.xml
+  after running:
+    npm run build
+    npx cap add android
+    npx cap sync android
+-->
+
+<!-- Required Permissions for Real Main Lock Screen & Phone Home Screen Operation -->
+<uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+<uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE" />
+<uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION" />
+<uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+<uses-permission android:name="android.permission.WAKE_LOCK" />
+<uses-permission android:name="android.permission.RECORD_AUDIO" />
+<uses-permission android:name="android.permission.CALL_PHONE" />
+<uses-permission android:name="android.permission.SEND_SMS" />
+<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+<uses-permission android:name="android.permission.VIBRATE" />
+
+<!-- Add showWhenLocked and turnScreenOn to your MainActivity inside <application> -->
+<!--
+<activity
+    android:name=".MainActivity"
+    android:showWhenLocked="true"
+    android:turnScreenOn="true"
+    android:exported="true" />
+-->
+
+<!-- Background Lock-Screen & Home-Screen Shield Foreground Service -->
+<service
+    android:name="app.oursafe.safety.shield.OurSafeBackgroundShieldService"
+    android:enabled="true"
+    android:exported="false"
+    android:foregroundServiceType="microphone|location" />
+
+<!-- System-Wide Double/Triple Tap Detector for Phone Main Lock Screen & Home Screen -->
+<service
+    android:name="app.oursafe.safety.shield.OurSafeTapAccessibilityService"
+    android:label="OurSafe Lock &amp; Home Screen Tap SOS"
+    android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE"
+    android:exported="false">
+    <intent-filter>
+        <action android:name="android.accessibilityservice.AccessibilityService" />
+    </intent-filter>
+</service>
+
+<!-- Native Android Home Screen SOS Widget -->
+<receiver
+    android:name="app.oursafe.safety.shield.OurSafeHomeWidgetProvider"
+    android:exported="false">
+    <intent-filter>
+        <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+    </intent-filter>
+</receiver>
